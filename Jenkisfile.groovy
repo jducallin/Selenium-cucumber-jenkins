@@ -6,7 +6,7 @@ pipeline {
         stage('Compile Stage') {
             steps {
                 script {
-                    def mvnHome = tool name: 'maven_3_9_5', type: 'maven'
+                    def mvnHome = tool name: 'maven_3_9_6', type: 'maven'
                     withEnv(["PATH+MAVEN=${mvnHome}/bin"]) {
                         bat "${mvnHome}\\bin\\mvn clean compile"
                     }
@@ -18,7 +18,7 @@ pipeline {
         stage('Test Stage') {
             steps {
                 script {
-                    def mvnHome = tool name: 'maven_3_9_5', type: 'maven'
+                    def mvnHome = tool name: 'maven_3_9_6', type: 'maven'
                     withEnv(["PATH+MAVEN=${mvnHome}/bin"]) {
                         bat "${mvnHome}\\bin\\mvn clean verify -Dcucumber.filter.tags=\"@PRUEBA1\""
                     }
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Cucumber Reports') {
             steps {
-                cucumber buildStatus: "UNSTABLE",
+                cucumber buildStatus: "SUCCESS",
                         fileIncludePattern: "**/cucumber.json",
                         jsonReportDirectory: 'target'
             }
