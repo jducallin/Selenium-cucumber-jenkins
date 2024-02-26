@@ -31,13 +31,10 @@ pipeline {
                 script {
                     def mvnHome = tool name: 'maven_3_9_6', type: 'maven'
                     withEnv(["PATH+MAVEN=${mvnHome}/bin"]) {
-                        sh "${mvnHome}/bin/mvn clean verify -Dcucumber.filter.tags=\"@PRUEBA1\"" // Use sh instead of bat for Unix-like systems
+                        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                            sh "${mvnHome}/bin/mvn clean verify -Dcucumber.filter.tags=\"@PRUEBA1\"" // Use sh instead of bat for Unix-like systems
+                        }
                     }
-                }
-            }
-            post {
-                always {
-                    allow_failure: true
                 }
             }
         }
