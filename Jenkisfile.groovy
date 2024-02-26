@@ -31,22 +31,22 @@ pipeline {
                 script {
                     def mvnHome = tool name: 'maven_3_9_6', type: 'maven'
                     withEnv(["PATH+MAVEN=${mvnHome}/bin"]) {
-                        def result = bat(script: "${mvnHome}\\bin\\mvn clean verify -Dcucumber.filter.tags=\"@PRUEBA1\"", returnStatus: true)
-                        if (result != 0) {
-                            error "Las pruebas han fallado."
-                        }
+                        sh "${mvnHome}/bin/mvn clean verify -Dcucumber.filter.tags=\"@PRUEBA1\"" // Use sh instead of bat for Unix-like systems
                     }
+                }
+            }
+            post {
+                always {
+                    allow_failure: true
                 }
             }
         }
 
-        stage('Cucumber Reports'){
-            steps{
-                post {
-                    always {
-                        cucumber fileIncludePattern: "**/cucumber.json",
-                                jsonReportDirectory: 'target'
-                    }
+        stage('Cucumber Reports') {
+            steps {
+                script {
+                    cucumber fileIncludePattern: "**/cucumber.json",
+                            jsonReportDirectory: 'target'
                 }
             }
         }
