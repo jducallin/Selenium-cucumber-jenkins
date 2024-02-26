@@ -27,9 +27,9 @@ pipeline {
 
         }
 
-        stage('Cucumber Reports') {
+        stage('Cucumber Reports'){
             post {
-                always {
+                always{
                     cucumber fileIncludePattern: "**/cucumber.json",
                             jsonReportDirectory: 'target'
                 }
